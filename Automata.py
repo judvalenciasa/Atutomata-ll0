@@ -69,9 +69,10 @@ class Automata():
         nuevaGramatica=self.verificarSiguiente(lista_Aux, arista)
         
         
-        nuevoEstado = self.ponerPunto(gramatica, arista) 
+        
+        #nuevoEstado = self.ponerPunto(gramatica, arista) 
         #hay que mirar el punto para poderlo correr
-        print("crear un estado solucionando")
+        #print("crear un estado solucionando")
         
         
     def ponerPunto(self, gramatica, arista):
@@ -82,6 +83,13 @@ class Automata():
     # self.mostar_Gramatica(aux)
     def verificarSiguiente(self, lista_Aux, arista):
         aux=self.limpiarGramatica(lista_Aux, arista)
+        for i in range(len(aux)):
+            print(aux[i])
+            for i2 in range(2, len(aux[i])):
+                if aux[i][i2] == arista:
+                    print("encontro")
+        
+        
         
         
         return aux
