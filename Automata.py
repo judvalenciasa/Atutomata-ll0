@@ -49,7 +49,6 @@ class Automata():
                 if i2 + 1  < len(aux_Gramatica[i]):
                     if aux_Gramatica[i][i2] == "." and aux_Gramatica[i][i2+1] == arista:
                         aux_Gramatica[i].pop(i2)
-        
         return aux_Gramatica.copy()
     
     #metodo listo
@@ -61,7 +60,6 @@ class Automata():
             for i2 in range(len(aux[i])):
                 if aux[i][i2] == ".":
                     encontro=True
-                    
                 ###############organizarl el punto#####################
             if encontro == True:
                 aux.pop(i)
@@ -84,8 +82,6 @@ class Automata():
         # print("-----------")
         
         
-        
-    
         nuevaGramatica=self.verificarSiguiente(lista_Aux, arista).copy()
         self.lista.append(nuevaGramatica.copy())
         
@@ -107,30 +103,55 @@ class Automata():
         # self.mostar_Gramatica(aux)
         # print(arista)
         # print(self.producciones)
-        
+        # for i in range(len(aux)):
+        #     for i2 in range(2, len(aux[i])):
+        #         if (i2 + 1  < len(aux[i])):
+        #             for i3 in range (len(self.producciones)):
+        #                 if (aux[i][i2] == "." and aux[i][i2 + 1] == self.producciones[i3]):
+        #                     self.devolver_Produccion(self.producciones[i3], aux)
+        print(self.producciones)
+        print("--")
         for i in range(len(aux)):
             for i2 in range(2, len(aux[i])):
                 if (i2 + 1  < len(aux[i])):
                     for i3 in range (len(self.producciones)):
                         if (aux[i][i2] == "." and aux[i][i2 + 1] == self.producciones[i3]):
-
                             self.devolver_Produccion(self.producciones[i3], aux)
+                            
+                            
+    
         
         return aux
     
     #Devuelve la produccion despues del punto
     def devolver_Produccion(self, arista, aux):
+        li=[]
         pri_Gramatica=[]
         pri_Gramatica = copy.deepcopy(self.lista[0])
+        for i in range(len(pri_Gramatica)):
+            if (arista == pri_Gramatica[i][0]):
+                aux.append(pri_Gramatica[i])
+                li.append(arista)
+        
+        for i in range(len(aux)):
+            for i2 in range(len(aux[i])):
+                for i3 in range(len(li)):
+                    if ((i2 + 1) < (len(aux[i]))):
+                        if(aux[i][i2] == "."):
+                            if aux[i][i2+1] != li[i3]:
+                                self.prueba(aux[i][i2+1], aux)
+                
+        
+    def prueba(self, letra, aux):
+        pri_Gramatica=[]
+        pri_Gramatica = copy.deepcopy(self.lista[0])
+        for i in range(len(pri_Gramatica)):
+            if (letra == pri_Gramatica[i][0]):
+                aux.append(pri_Gramatica[i])
+                break
         
         
-        
-        
-        self.mostar_Gramatica(aux)
-        return pri_Gramatica
-        
-    
-    
+                
     def mostar_Gramatica(self, gramatica):
         for i in range(len(gramatica)):
             print(gramatica[i])
@@ -177,7 +198,8 @@ a = Automata(producciones)
 e = a.crearPunto(gramatica)
 a.crearEstado(a.lista[0].copy())
 a.crearEstado(a.lista[1].copy())
-# a.mostrar_Grafo()
+a.crearEstado(a.lista[2].copy())
+a.mostrar_Grafo()
 
 
 
