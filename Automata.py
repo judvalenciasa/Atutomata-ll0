@@ -36,7 +36,7 @@ class Automata():
         for i in range (len(aux_Gramatica)):
             for i2 in range(len(aux_Gramatica[i])):
                 if i2 + 1  < len(aux_Gramatica[i]):
-                    if aux_Gramatica[i][i2] == ".":
+                    if aux_Gramatica[i][i2] == "." and aux_Gramatica[i][i2 +1] != None:
                         return aux_Gramatica[i][i2+1]
         return -1
     
@@ -72,19 +72,17 @@ class Automata():
     def crearEstado(self, gramatica):
         #si arista es -1 es porque ya acabo de ir a los estados
         aux_Gramatica=gramatica.copy()
+        # for i in range(len(gramatica)):
+        #     for i2 in range(len(gramatica[i])):
+                
+        #         print("hola")
+        
+        
+        
         arista=self.obtenerArista(aux_Gramatica)
-        
         lista_Aux=self.quitarPunto(aux_Gramatica.copy(), arista)
-        # print("-----------")
-        # self.mostar_Gramatica(lista_Aux)
-        # print("--")
-        # self.mostar_Gramatica(gramatica)
-        # print("-----------")
-        
-        
         nuevaGramatica=self.verificarSiguiente(lista_Aux, arista).copy()
         self.lista.append(nuevaGramatica.copy())
-        
  
     def ponerPunto(self, lista2, arista):
         l=copy.deepcopy(lista2)
@@ -109,17 +107,16 @@ class Automata():
         #             for i3 in range (len(self.producciones)):
         #                 if (aux[i][i2] == "." and aux[i][i2 + 1] == self.producciones[i3]):
         #                     self.devolver_Produccion(self.producciones[i3], aux)
-        print(self.producciones)
-        print("--")
+    
+       
         for i in range(len(aux)):
             for i2 in range(2, len(aux[i])):
                 if (i2 + 1  < len(aux[i])):
                     for i3 in range (len(self.producciones)):
                         if (aux[i][i2] == "." and aux[i][i2 + 1] == self.producciones[i3]):
                             self.devolver_Produccion(self.producciones[i3], aux)
-                            
-                            
-    
+                           
+                         
         
         return aux
     
@@ -133,22 +130,37 @@ class Automata():
                 aux.append(pri_Gramatica[i])
                 li.append(arista)
         
+        
+        # self.eliminar_Duplicados(li)
         for i in range(len(aux)):
             for i2 in range(len(aux[i])):
                 for i3 in range(len(li)):
                     if ((i2 + 1) < (len(aux[i]))):
                         if(aux[i][i2] == "."):
                             if aux[i][i2+1] != li[i3]:
-                                self.prueba(aux[i][i2+1], aux)
-                
+                                self.prueba(aux[i][i2+1], aux, li)
+                                break
+                                
+                                
+                                
+                                
+    def eliminar_Duplicados(self, lista):
+        for i in range (len(lista)):
+            for i2 in range (len(lista)):
+                if i+1 < len(lista):   
+                    if lista[i+1] == lista[i2]:
+                        lista.pop()
         
-    def prueba(self, letra, aux):
+        
+    def prueba(self, letra, aux, li):
         pri_Gramatica=[]
         pri_Gramatica = copy.deepcopy(self.lista[0])
-        for i in range(len(pri_Gramatica)):
+        
+        for i in range(2,len(pri_Gramatica)):
             if (letra == pri_Gramatica[i][0]):
                 aux.append(pri_Gramatica[i])
-                break
+                
+                
         
         
                 
@@ -180,7 +192,7 @@ producciones=["S","E","T","F"]
 lista0=["S","-","E"]
 lista1=["E","-","E","+","T"]
 lista2=["E","-","T"]
-lista3=["T","-","T","*","T"]
+lista3=["T","-","T","*","F"]
 lista4=["T","-","F"]
 lista5=["F","-","id"]
 lista6=["F","-","(","E",")"]
@@ -199,6 +211,10 @@ e = a.crearPunto(gramatica)
 a.crearEstado(a.lista[0].copy())
 a.crearEstado(a.lista[1].copy())
 a.crearEstado(a.lista[2].copy())
+a.crearEstado(a.lista[3].copy())
+a.crearEstado(a.lista[4].copy())
+a.crearEstado(a.lista[5].copy())
+
 a.mostrar_Grafo()
 
 
