@@ -1,19 +1,3 @@
-#VISTA
-# from tkinter import *
-# raiz=Tk()
-# raiz.title("Bienvenidos. ")
-# raiz.resizable(1,1)
-# raiz.iconbitmap("../imagenes/icono.ico")
-# raiz.geometry("700x550")
-# raiz.config(bg="blue")
-# raiz.config(bd=20)
-# frame=Frame(raiz, width="900", height="650", bg="red")
-# frame.pack()
-# miLabel=Label(frame, text="ingrese la gramatica").place(x=10,y=20)
-# #miImagen = PhotoImage(file="RUTA")
-# #Label(frame, miImagen).place(x=10,y=20)
-# raiz.mainloop()
-#####################################
 import copy
 class Automata():    
     lista=[]
@@ -32,12 +16,14 @@ class Automata():
         self.lista.append(gramatica_Aux)
     
     def obtenerArista(self, gramatica):
-        aux_Gramatica=gramatica.copy()
+        aux_Gramatica=copy.deepcopy(gramatica)
         for i in range (len(aux_Gramatica)):
             for i2 in range(len(aux_Gramatica[i])):
                 if i2 + 1  < len(aux_Gramatica[i]):
-                    if aux_Gramatica[i][i2] == "." and aux_Gramatica[i][i2 +1] != None:
+                    if aux_Gramatica[i][i2] == "." and aux_Gramatica[i][i2+1] != None:
                         return aux_Gramatica[i][i2+1]
+            # print(aux_Gramatica[i])        
+        
         return -1
     
     #Metodo listo
@@ -53,7 +39,7 @@ class Automata():
     
     #metodo listo
     def limpiarGramatica(self, gramatica, arista):
-        aux = gramatica.copy()
+        aux = copy.deepcopy(gramatica)
         encontro=False
         i=0
         while i < len(aux):
@@ -68,14 +54,22 @@ class Automata():
             i=i+1
         return aux
     
-    def crearEstado(self, gramatica):
+    def crearEstado(self, gramatica2):
         #si arista es -1 es porque ya acabo de ir a los estados
-        aux_Gramatica=gramatica.copy()
-        arista=self.obtenerArista(aux_Gramatica)
-        lista_Aux=self.quitarPunto(aux_Gramatica.copy(), arista)
-        nuevaGramatica=self.verificarSiguiente(lista_Aux, arista).copy()
-        self.lista.append(nuevaGramatica.copy())
- 
+        gramatica = copy.deepcopy(gramatica2)
+        # copy.deepcopy()
+        
+        for i in range(len(producciones)):
+            aux_Gramatica=copy.deepcopy(gramatica)
+            # arista=self.obtenerArista(aux_Gramatica)
+            arista = producciones[i]
+            lista_Aux=self.quitarPunto(copy.deepcopy(aux_Gramatica), arista)
+            nuevaGramatica=self.verificarSiguiente(copy.deepcopy(lista_Aux), arista)
+            if len(nuevaGramatica) > 0 :
+                self.lista.append([arista])
+                self.lista.append(copy.deepcopy(nuevaGramatica))
+                
+        
     def ponerPunto(self, lista2, arista):
         l=copy.deepcopy(lista2)
         for i in range (len(l)):
@@ -96,8 +90,7 @@ class Automata():
                         if (aux[i][i2] == "." and aux[i][i2 + 1] == self.producciones[i3]):
                             self.devolver_Produccion(self.producciones[i3], aux)
                            
-                         
-        
+                    
         return aux
     
     #Devuelve la produccion despues del punto
@@ -130,9 +123,6 @@ class Automata():
                 aux.append(pri_Gramatica[i])
                 
                 
-        
-        
-                
     def mostar_Gramatica(self, gramatica):
         for i in range(len(gramatica)):
             print(gramatica[i])
@@ -141,7 +131,7 @@ class Automata():
         for estado in range(len(self.lista)):
             if self.lista[estado] != None:
                 self.mostar_Gramatica(self.lista[estado])
-                print(".-----------------------------.-------------------")
+                print(".------------------",estado,"-----------.-------------------")
  
 
 class Estado():
@@ -156,7 +146,7 @@ class Estado():
         
         
 #####################################
-producciones=["S","E","T","F"]
+producciones=["S","E","T","F","+","*","id","(",")"]
 
 lista0=["S","-","E"]
 lista1=["E","-","E","+","T"]
@@ -178,23 +168,14 @@ gramatica.append(lista6)
 a = Automata(producciones)
 e = a.crearPunto(gramatica)
 a.crearEstado(a.lista[0].copy())
-a.crearEstado(a.lista[1].copy())
 a.crearEstado(a.lista[2].copy())
-a.crearEstado(a.lista[3].copy())
 a.crearEstado(a.lista[4].copy())
-a.crearEstado(a.lista[5].copy())
+a.crearEstado(a.lista[10].copy())
+# a.crearEstado(a.lista[8].copy())
+# a.crearEstado(a.lista[5].copy())
+# a.crearEstado(a.lista[6].copy())
 
 a.mostrar_Grafo()
 
-
-
-
-
-
-
-
-
-
-
-
+# print(a.lista[1])
 
